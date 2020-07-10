@@ -1,30 +1,39 @@
 public class CutRope {
-    public static int cutRope(int target) {
-        if (target <= 3){
-            return target-2;
-        }
-        int ropes = target/3;
-        int last_rope = target%3;
-        if (last_rope == 1){
-            return (int)Math.pow(3,ropes-1)*4;
-        }else if(last_rope == 2){
-            return (int)Math.pow(3, ropes)*2;
+    public static int cutRope(int n) {
+        if (n <= 3){
+            return n-1;
         }else{
-            return (int)Math.pow(3, ropes);
+            return (int)cutAccumulate(120,1);
+        }
+
+    }
+
+    public static long cutAccumulate(int target, long currentLength){
+        if (target <= 4){
+            return currentLength*target%1000000007;
+        }else{
+            return cutAccumulate(target-3, (currentLength*3)%1000000007);
         }
     }
 
-    public static int cutAccumulate(int target, int currentLength){
-        if (target <= 4){
-            return currentLength*target;
-        }else{
-            return cutAccumulate(target-3, currentLength*3);
+    public static int cuttingRope(int n) {
+        if(n <= 3) return n - 1;
+        int b = n % 3, p = 1000000007;
+        long rem = 1, x = 3;
+        for(int a = n / 3 - 1; a > 0; a /= 2) {
+            if(a % 2 == 1) rem = (rem * x) % p;
+            x = (x * x) % p;
         }
+        if(b == 0) return (int)(rem * 3 % p);
+        if(b == 1) return (int)(rem * 4 % p);
+        return (int)(rem * 6 % p);
     }
+
 
     public static void main(String[] args) {
-        System.out.println(cutRope(55));
-        System.out.println(cutAccumulate(55, 1));
+        System.out.println(cutRope(120));
+        System.out.println(cutAccumulate(120, 1));
+        System.out.println(cuttingRope(120));
     }
 
 }
